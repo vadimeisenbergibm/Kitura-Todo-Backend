@@ -1,0 +1,5 @@
+.build/*
+.build-ubuntu/*
+.travis.yml
+.ci_build.sh
+*.xcodeproj/*

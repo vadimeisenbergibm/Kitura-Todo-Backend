@@ -1,0 +1,7 @@
+applications:
+- name: Kitura-TodoBackend-InMemory
+  memory: 256M
+  instances: 1
+  disk_quota: 1024M
+  command: KituraTodoBackendInMemory
+  buildpack: swift_buildpack
