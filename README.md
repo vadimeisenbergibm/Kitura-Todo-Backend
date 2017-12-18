@@ -6,3 +6,6 @@
 # Kitura-Todo-Backend-InMemory
 
 A description of this package.
+
+## Deploy to IBM Cloud
+Just push the button[![Deploy to IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/vadimeisenbergibm/Kitura-Todo-Backend-InMemory.git)
