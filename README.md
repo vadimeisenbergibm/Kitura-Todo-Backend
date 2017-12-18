@@ -8,4 +8,10 @@
 A description of this package.
 
 ## Deploy to IBM Cloud
-Just push the button[![Deploy to IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/vadimeisenbergibm/Kitura-Todo-Backend-InMemory.git)
+In the command line:
+
+`bx app push`
+
+Or just push the button below.
+
+[![Deploy to IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/vadimeisenbergibm/Kitura-Todo-Backend-InMemory.git)
