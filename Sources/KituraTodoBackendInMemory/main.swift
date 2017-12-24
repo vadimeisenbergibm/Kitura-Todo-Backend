@@ -34,7 +34,6 @@ let portString = configurationManager["PORT"] as? String ?? "\(defaultPort)"
 let port = Int(portString) ?? defaultPort
 
 let urlString: String
-
 if let cloudFoundryAppURI = configurationManager["VCAP_APPLICATION:application_uris:0"] as? String {
     urlString = "https://" + cloudFoundryAppURI
 } else {
