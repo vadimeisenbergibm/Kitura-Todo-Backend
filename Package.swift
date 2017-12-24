@@ -29,10 +29,12 @@ let package = Package(
                      .upToNextMajor(from: "0.0.0")),
       .package(url: "https://github.com/IBM-Swift/LoggerAPI.git", .upToNextMajor(from: "1.7.0")),
       .package(url: "https://github.com/IBM-Swift/HeliumLogger.git", .upToNextMajor(from: "1.7.0")),
+      .package(url: "https://github.com/IBM-Swift/Configuration.git", .upToNextMajor(from: "3.0.0"))
     ],
     targets: [
         .target(
             name: "KituraTodoBackendInMemory",
-            dependencies: ["Kitura", "TodoBackendInMemoryDataLayer", "TodoBackendRouter", "HeliumLogger", "LoggerAPI"]),
+            dependencies: ["Kitura", "TodoBackendInMemoryDataLayer", "TodoBackendRouter",
+                           "HeliumLogger", "LoggerAPI", "Configuration"]),
     ]
 )

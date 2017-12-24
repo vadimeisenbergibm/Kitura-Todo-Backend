@@ -19,14 +19,32 @@ import Foundation
 import Kitura
 import LoggerAPI
 import HeliumLogger
+import Configuration
 
 import TodoBackendInMemoryDataLayer
 import TodoBackendRouter
 
 Log.logger = HeliumLogger()
 
-let router = RouterCreator.create(dataLayer: DataLayer())
-let port = Int(ProcessInfo.processInfo.environment["PORT"] ?? "8080") ?? 8080
-Kitura.addHTTPServer(onPort: port, with: router)
+let configurationManager = ConfigurationManager()
+configurationManager.load(.environmentVariables)
 
-Kitura.run()
+let defaultPort = 8080
+let portString = configurationManager["PORT"] as? String ?? "\(defaultPort)"
+let port = Int(portString) ?? defaultPort
+
+let urlString: String
+
+if let cloudFoundryAppURI = configurationManager["VCAP_APPLICATION:application_uris:0"] as? String {
+    urlString = "https://" + cloudFoundryAppURI
+} else {
+    urlString = "http://localhost:\(port)"
+}
+
+if let baseURL = URL(string: urlString) {
+    let router = RouterCreator.create(dataLayer: DataLayer(), baseURL: baseURL)
+    Kitura.addHTTPServer(onPort: port, with: router)
+    Kitura.run()
+} else {
+    Log.error("unable to create URL from \(urlString)")
+}
