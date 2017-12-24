@@ -26,25 +26,31 @@ import TodoBackendRouter
 
 Log.logger = HeliumLogger()
 
-let configurationManager = ConfigurationManager()
-configurationManager.load(.environmentVariables)
+func getURLAndPort() -> (URL, Int) {
+    let configurationManager = ConfigurationManager()
+    configurationManager.load(.environmentVariables)
 
-let defaultPort = 8080
-let portString = configurationManager["PORT"] as? String ?? "\(defaultPort)"
-let port = Int(portString) ?? defaultPort
+    let defaultPort = 8080
+    let portString = configurationManager["PORT"] as? String ?? "\(defaultPort)"
+    let port = Int(portString) ?? defaultPort
 
-let urlString: String
-
-if let cloudFoundryAppURI = configurationManager["VCAP_APPLICATION:application_uris:0"] as? String {
-    urlString = "https://" + cloudFoundryAppURI
-} else {
-    urlString = "http://localhost:\(port)"
+    let urlString: String
+    if let cloudFoundryAppURI = configurationManager["VCAP_APPLICATION:application_uris:0"]
+                                as? String {
+        urlString = "https://" + cloudFoundryAppURI
+    } else {
+        urlString = "http://localhost:\(port)"
+    }
+    if let url = URL(string: urlString) {
+        return (url, port)
+    } else {
+        Log.error("unable to create URL from \(urlString)")
+        // in case of an error return a URL for the current path, as a null object
+        return (URL(fileURLWithPath: ""), port)
+    }
 }
 
-if let baseURL = URL(string: urlString) {
-    let router = RouterCreator.create(dataLayer: DataLayer(), baseURL: baseURL)
-    Kitura.addHTTPServer(onPort: port, with: router)
-    Kitura.run()
-} else {
-    Log.error("unable to create URL from \(urlString)")
-}
+let (baseURL, port) = getURLAndPort()
+let router = RouterCreator(dataLayer: DataLayer(), baseURL: baseURL).create()
+Kitura.addHTTPServer(onPort: port, with: router)
+Kitura.run()
